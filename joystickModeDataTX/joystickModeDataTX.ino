@@ -4,22 +4,26 @@
 
 String send_val = "";
 
-char ssid[] = "HP-setup-nouth";  // your network SSID (name)
-char pass[] = "detkinlabnouth101999";    // your network password
+char ssid[] = "HP-setup-north";  // your network SSID (name)
+char pass[] = "detkinlabnorth101999";    // your network password
 int keyIndex = 0;                 // your network key Index number (needed only for WEP)
                         
 int status = WL_IDLE_STATUS;
 
-int joy1 = 0;
-int joy2 = 1;
+int joy1 = A0;
+int joy2 = A1;
+int modeButton = 7;
 int mode = 0;
 
+int button_val = 0;
+int old_button_val = 0;
 
 WiFiServer server(80);
 
 
 void setup() {
   //Initialize serial and wait for port to open:
+  pinMode(modeButton, INPUT);
   Serial.begin(9600); 
   while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
@@ -80,6 +84,15 @@ void loop() {
           /*Takes the light reading and scales it from 0 to 100. 500 corresponds to the offset from 0.
            * You might need to play around with these values to scale it to suit your sensor
            */
+
+          button_val = digitalRead(modeButton);
+
+          if ((button_val == HIGH) && (old_button_val == LOW)){
+               mode = 1 - mode;
+            }  
+
+          old_button_val = button_val;
+          
           int joyval1 = analogRead(joy1);//joystick
           int joyval2 = analogRead(joy2);
           //Forming a string of joystick values (L/R direction corresponds to X, and U/D direction corresponds to Y)
