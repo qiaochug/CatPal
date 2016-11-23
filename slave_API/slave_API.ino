@@ -19,8 +19,9 @@ WiFiClient client;
 TextFinder  finder( client ); 
 
 
-char anaRead1[100];
-char anaRead2[100];
+char anaRead1[10];
+char anaRead2[10];
+char anaRead3[10];
 
 
 
@@ -62,6 +63,7 @@ void loop() {
     int connFlag = 0;
     int fieldFlag1 = 0;
     int fieldFlag2 = 0;
+    int fieldFlag3 = 0;
 
 
       if (client.connect(server, 80)) { 
@@ -82,21 +84,29 @@ void loop() {
     //Parsing the file that we have
     //String matching using the special library
    //adjust buffer size as needed 
-   if ( (finder.getString("<field1>" ,"</field1>",anaRead1,10)!=0) ) {
+   if ( (finder.getString("<field1>" ,"</field1>",anaRead1,5)!=0) ) {
      fieldFlag1 = fieldFlag1 + 1;
      if(fieldFlag1 > 1) { 
      Serial.println();
-     Serial.print("Light:  ");
+     Serial.print("mode:  ");
      Serial.println(anaRead1);
      }
    }  
    //adjust buffer size as needed 
-   if ( (finder.getString("<field2>" ,"</field2>",anaRead2,10)!=0)) {
+   if ( (finder.getString("<field2>" ,"</field2>",anaRead2,5)!=0)) {
      fieldFlag2 = fieldFlag2 + 1;
      if(fieldFlag2 > 1) {
      Serial.println();
-     Serial.print("Temperature:  ");
+     Serial.print("Joy_x:  ");
      Serial.println(anaRead2);
+     }
+   }   
+   if ( (finder.getString("<field3>" ,"</field3>",anaRead3,5)!=0)) {
+     fieldFlag3 = fieldFlag3 + 1;
+     if(fieldFlag3 > 1) {
+     Serial.println();
+     Serial.print("Joy_y:  ");
+     Serial.println(anaRead3);
      }
    }    
   Serial.println();
@@ -106,11 +116,12 @@ void loop() {
    connFlag = 0; //formatting sake
    fieldFlag1 = 0; //used to format output - don't print field names - via the xml file to get an idea 
    fieldFlag2 = 0;
+   fieldFlag3 = 0;
 
 
   client.stop();
   client.flush();
-  delay(10000); //refresh rate should be moderated. Else tries refreshing at clock speed
+  delay(1000); //refresh rate should be moderated. Else tries refreshing at clock speed
 }
 
 
