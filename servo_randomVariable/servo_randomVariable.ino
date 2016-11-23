@@ -21,8 +21,8 @@ void loop()
             y = int(random(30, 90));
             servo_x.write(x);
             servo_y.write(y);
-            Serial.println("x: "+ x);
-            Serial.println("y: " + y);
+            Serial.println(x);
+            Serial.println(y);
             delay(500);
                         
     }     
