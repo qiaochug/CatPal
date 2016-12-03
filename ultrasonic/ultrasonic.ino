@@ -1,7 +1,8 @@
 #include <SPI.h>
 #include <WiFi101.h>
-#define trigPin 13
-#define echoPin 12
+#define trigPin 6
+#define echoPin 3
+
 
 
 char ssid[] = "HP-setup-north"; //  your network SSID (name) 
@@ -27,6 +28,7 @@ const String apiKey = "98P47Y7UPHNRQ6V9";
 
 //the number the message should be sent to
 const String sendNumber = "2678581272";
+static boolean msg_sent = false;
 
 
 void setup()
@@ -55,8 +57,6 @@ void setup()
   } 
   Serial.println("Connected to wifi");
   printWifiStatus();
-
-
 }
 
 
@@ -66,7 +66,7 @@ long beep_time = 1000; // Time to toggle buzzer on and off
 void loop()
 {
   static boolean lack = false;
-  static boolean msg_sent = false;
+  
 
   long duration, distance;
   digitalWrite(trigPin, LOW);  // start trig at 0
@@ -96,9 +96,10 @@ void loop()
     //this function will send the sms
     //the first argument is the number to send to, formatted like this +12345678901
     //the second argument is the body of the text message, which must be within URLEncode()
-    sendSMS(sendNumber, URLEncode("There is little food left, please refill the jug"));
+    sendSMS(sendNumber, URLEncode("Feed me! -- Miao"));
     msg_sent = true;
   }
+}
 
 
 
@@ -144,7 +145,6 @@ void sendSMS(String number,String message)
   Serial.println();
   client.stop();
 }
-
 
 String URLEncode(const char* msg)
 {

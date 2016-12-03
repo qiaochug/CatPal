@@ -12,8 +12,8 @@ int status = WL_IDLE_STATUS;
 
 int joy1 = A0;
 int joy2 = A1;
-int modeButton = 7;
-int feedButton = 8;
+int modeButton = 9;
+int feedButton = 10;
 int mode = 0;
 int feed = 0;
 
@@ -81,7 +81,7 @@ void loop() {
           client.println("HTTP/1.1 200 OK");
           client.println("Content-Type: text/html");
           client.println("Connection: close");  // the connection will be closed after completion of the response
-          client.println("Refresh: 5");  // refresh the page automatically every 5 sec
+          client.println("Refresh: 1");  // refresh the page automatically every 5 sec
           client.println();
           client.println("<!DOCTYPE HTML>");
           client.println("<html>");
@@ -98,7 +98,7 @@ void loop() {
                mode = 1 - mode;
             }
 
-          if ((feed_val == HIGH) && (feed_val == LOW)){
+          if ((feed_val == HIGH) && (old_feed_val == LOW)){
                feed = 1 - feed;
             }
 
@@ -109,19 +109,21 @@ void loop() {
           int joyval2 = analogRead(joy2);
           //Forming a string of joystick values (L/R direction corresponds to X, and U/D direction corresponds to Y)
           send_val = "X"+(String)joyval1+"Y"+(String)joyval2;
-          Serial.print(send_val); //Printing on the serial monitor // read light value
+          Serial.println(send_val);//Printing on the serial monitor // read light value
           
           //Sending data enclosed in different types of brackets to make it easier for the client to recognize
           client.print("[");
           client.print(mode);
-          client.print(",");
-          client.print(feed);
           client.print("]");
           client.print("{");
-          client.print(joyval1);
-          client.print(",");
-          client.print(joyval2);
+          client.print(feed);
           client.print("}");
+          client.print("*");
+          client.print(joyval1);
+          client.print("|");
+          client.print("(");
+          client.print(joyval2);
+          client.print(")");
           client.print("<br />");
           
           client.println("</html>");
