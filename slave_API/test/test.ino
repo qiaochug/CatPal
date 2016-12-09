@@ -19,9 +19,8 @@ WiFiClient client;
 TextFinder  finder( client ); 
 
 
-char anaRead1[30];
-char anaRead2[30];
-char anaRead3[30];
+char anaRead1[100];
+char anaRead2[100];
 
 
 
@@ -63,13 +62,12 @@ void loop() {
     int connFlag = 0;
     int fieldFlag1 = 0;
     int fieldFlag2 = 0;
-    int fieldFlag3 = 0;
 
 
       if (client.connect(server, 80)) { 
     //If connection was made, issue HTTP Request 
     Serial.println("Connect to thing Speak..."); //
-    client.println("GET /channels/190178/feed.xml?results=1 HTTP/1.1"); //Use your channel number instead of "127550". Check your url
+    client.println("GET /channels/190178/feed.xml?results=10 HTTP/1.1"); //Use your channel number instead of "127550". Check your url
     client.print("X-THINGSPEAKAPIKEY: "+readAPIKey+"\n");
     client.println("HOST: api.thingspeak.com ");
     client.println("Connection: close");
@@ -79,7 +77,8 @@ void loop() {
     
   }
 
- while (client.connected() && connFlag == 1) {
+
+    while (client.connected() && connFlag == 1) {
     //Parsing the file that we have
     //String matching using the special library
    //adjust buffer size as needed 
@@ -87,7 +86,7 @@ void loop() {
      fieldFlag1 = fieldFlag1 + 1;
      if(fieldFlag1 > 1) { 
      Serial.println();
-     Serial.print("mode:  ");
+     Serial.print("Light:  ");
      Serial.println(anaRead1);
      }
    }  
@@ -96,34 +95,22 @@ void loop() {
      fieldFlag2 = fieldFlag2 + 1;
      if(fieldFlag2 > 1) {
      Serial.println();
-     Serial.print("Joy_x:  ");
+     Serial.print("Temperature:  ");
      Serial.println(anaRead2);
-     }
-   }   
-   if ( (finder.getString("<field3>" ,"</field3>",anaRead3,10)!=0)) {
-     fieldFlag3 = fieldFlag3 + 1;
-     if(fieldFlag3 > 1) {
-     Serial.println();
-     Serial.print("Joy_y:  ");
-     Serial.println(anaRead3);
      }
    }    
   Serial.println();
   // END XML
   }
-   Serial.println("Done");
-//      Serial.println(anaRead1);
-//  Serial.println(anaRead2);
-//  Serial.println(anaRead3);
+   Serial.print("Done");
    connFlag = 0; //formatting sake
    fieldFlag1 = 0; //used to format output - don't print field names - via the xml file to get an idea 
    fieldFlag2 = 0;
-   fieldFlag3 = 0;
 
 
   client.stop();
   client.flush();
-  delay(10); //refresh rate should be moderated. Else tries refreshing at clock speed
+  delay(10000); //refresh rate should be moderated. Else tries refreshing at clock speed
 }
 
 

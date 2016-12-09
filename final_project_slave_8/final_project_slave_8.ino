@@ -114,9 +114,11 @@ void connectAndRead()
           {
               //Serial.println("I am in in this if statement\n");
               char c = client.read();
-            //  Serial.println("client avai");
+              //Serial.println("client avai");
+              Serial.print(c);
               if(c == '[') //mode reading
                 {
+                  //Serial.println("[Detected");
                   startRead_button = true;
         
                 }
@@ -194,19 +196,19 @@ void connectAndRead()
         //Serial.print("y: ");
         Serial.println(inString_y);
 
-        /*if(inString_mode.toInt() == 1)
+        if(inString_mode.toInt() == 1)
         {
             servo_x.write(random(180));
             servo_y.write(random(30, 90));
            // control = random(0,6000);
-            delay(100);
+            delay(100);}
             
-         /*   if(control < 2) //feeder is controlled using a random variable, this will feed approx every 5 minutes
+         /*  if(control < 2) //feeder is controlled using a random variable, this will feed approx every 5 minutes
             {
                 servo_feed.write(30);
                 delay(1000);
               }
-          }
+          }*/
 
         if(inString_mode.toInt() == 0)
         {
@@ -218,8 +220,14 @@ void connectAndRead()
               servo_y.write(pos_y);
 
               delay(100);
-          }*/
+          }
+
+        if(inString_feed.toInt() == 1){
+          servo_feed.write(30);
+          delay(1500);
+        }
           delay(500);
+          servo_feed.write(90);
   }
 
 void printWifiStatus()

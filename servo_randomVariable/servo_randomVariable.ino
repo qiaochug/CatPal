@@ -5,6 +5,7 @@ Servo servo_y;
 Servo servo_feed;
 int x;
 int y;
+int led = 8;
 
 void setup()
 {
@@ -12,6 +13,7 @@ void setup()
     servo_y.attach(10);
     servo_feed.attach(11);
     Serial.begin(9600);
+    pinMode(led, OUTPUT);
   }
 
 void loop()
@@ -19,6 +21,7 @@ void loop()
     { 
             x = int(random(180));
             y = int(random(30, 90));
+            digitalWrite(led, HIGH);
             servo_x.write(x);
             servo_y.write(y);
             Serial.println(x);

@@ -3,8 +3,8 @@
 #include <WiFi101.h>
 
 
-char ssid[] = "HP-setup-south"; //  your network SSID (name) 
-char pass[] = "detkinlabsouth101999";    // your network password (use for WPA, or use as key for WEP)
+char ssid[] = "HP-setup-north"; //  your network SSID (name) 
+char pass[] = "detkinlabnorth101999";    // your network password (use for WPA, or use as key for WEP)
 int keyIndex = 0;            // your network key Index number (needed only for WEP)
 
 
@@ -14,7 +14,7 @@ int status = WL_IDLE_STATUS;
 //Check the IP address of the server and fill it out:
 
 
-byte server[] = {123,123,123,123};
+byte server[] = {192,168,1,146};
 
 
 // Initialize the WiFiclient client library
@@ -119,7 +119,6 @@ void connectAndRead(){
     inString_feed = "";
     inString_joyx = "";
     inString_joyy = "";
-    boolean firstComma = true;
 
     while(true) {
     if(client.available()) {
@@ -142,6 +141,7 @@ void connectAndRead(){
         }else{
           startRead_feed = false;
           firstComma = false;
+          Serial.print(inString_feed);
         }
       }
 
@@ -198,7 +198,7 @@ void connectAndRead(){
 
     if(inString_feed.toInt() == 1){
       servo_feed.write(30);
-      servo_feed.write(0);
+      delay(1000);
     }
 
 

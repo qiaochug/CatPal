@@ -118,16 +118,10 @@ void connectAndRead()
               if(c == '[') //mode reading
                 {
                   startRead_button = true;
-        
-                }
-              else if(startRead_button)
-              {
-                  if(c != ']')
-                  {
+                }else if(startRead_button){
+                  if(c != ']'){
                       inString_mode += c;
-                    }
-                   else
-                   {  
+                    }else{  
                       startRead_button = false;
                      // Serial.println(inString_mode);
                     }
@@ -135,9 +129,7 @@ void connectAndRead()
                if(c == '{') //joystick pos 
                {
                   startRead_feed = true;
-                }
-               else if(startRead_feed)
-               {
+                }else if(startRead_feed){
                   if(c != '}')
                    { inString_feed += c;}
                   else
@@ -164,9 +156,7 @@ void connectAndRead()
                  if(c == '(') //add a * after ,
                 {
                     startRead_y = true; 
-                 }
-                else if(startRead_y)
-                {
+                 } else if(startRead_y){
                   if(c != ')')
                   {inString_y += c;}
                   else
@@ -194,14 +184,14 @@ void connectAndRead()
         //Serial.print("y: ");
         Serial.println(inString_y);
 
-        /*if(inString_mode.toInt() == 1)
+        if(inString_mode.toInt() == 1)
         {
             servo_x.write(random(180));
             servo_y.write(random(30, 90));
            // control = random(0,6000);
             delay(100);
             
-         /*   if(control < 2) //feeder is controlled using a random variable, this will feed approx every 5 minutes
+            if(control < 2) //feeder is controlled using a random variable, this will feed approx every 5 minutes
             {
                 servo_feed.write(30);
                 delay(1000);
@@ -218,26 +208,26 @@ void connectAndRead()
               servo_y.write(pos_y);
 
               delay(100);
-          }*/
+          }
           delay(500);
   }
 
 void printWifiStatus()
 {
     //print the SSID of the network you are attached to 
-    //Serial.print("SSID: ");
+    Serial.print("SSID: ");
     Serial.println(WiFi.SSID());
 
     //print your WiFi shield's IP address
     IPAddress ip = WiFi.localIP();
-    //Serial.print("IP Address: ");
-    //Serial.println(ip);
+    Serial.print("IP Address: ");
+    Serial.println(ip);
 
     //print the received signal strength:
     long rssi = WiFi.RSSI();
-    //Serial.print("Signal strength (RSSI): ");
-    //Serial.print(rssi);
-    //Serial.println(" dBm");
+    Serial.print("Signal strength (RSSI): ");
+    Serial.print(rssi);
+    Serial.println(" dBm");
   }
 
 
