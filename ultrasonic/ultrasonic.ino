@@ -60,8 +60,6 @@ void setup()
 }
 
 
-long beep_time = 1000; // Time to toggle buzzer on and off 
-
 
 void loop()
 {

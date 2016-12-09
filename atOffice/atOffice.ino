@@ -4,8 +4,8 @@
 
 String send_val = "";
 
-char ssid[] = "HP-setup-north";  // your network SSID (name)
-char pass[] = "detkinlabnorth101999";    // your network password
+char ssid[] = "HP-setup-north";//"MT7-TL10";  // your network SSID (name)
+char pass[] = "detkinlabnorth101999";//"hanmingz";    // your network password
 int keyIndex = 0;                 // your network key Index number (needed only for WEP)
                         
 int status = WL_IDLE_STATUS;
