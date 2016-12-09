@@ -95,7 +95,7 @@ void loop() {
 
        
       
-      if(read_data == true){
+      if(read_data){
           if(inString_mode.toInt() != 1){
                x = inString_x.toInt();
           y = inString_y.toInt();
@@ -113,7 +113,9 @@ void loop() {
           else if(inString_mode.toInt()==1){
             Random();
           }
-      } 
+      } else if(!read_data){
+         digitalWrite(laser,LOW):
+      }
       totalString = "";
       string_to_use = "";
       inString_x = "";
