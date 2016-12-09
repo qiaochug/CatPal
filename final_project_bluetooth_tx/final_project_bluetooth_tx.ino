@@ -1,8 +1,8 @@
 #include <SoftwareSerial.h>
 SoftwareSerial BTSerial(2, 3); //TX RX
 String send_val = "";
-int joyxSeonsor = 0;
-int joyySeonsor = 1;
+int joyxSensor = 0;
+int joyySensor = 1;
 
 int joyx;
 int joyy;
@@ -27,7 +27,7 @@ void setup() {
 }
 
 void loop() {
-  feed_val = 0;
+  feed = 0;
   // put your main code here, to run repeatedly:
   int joyx = analogRead(joyxSensor);
   int joyy = analogRead(joyySensor);
@@ -47,6 +47,6 @@ void loop() {
   
   send_val = "X" + (String)joyx + "Y" + (String)joyy + "F" + (String)feed + "M" + (String)mode;
   BTSerial.println(send_val);
-  Serial.print(send_val);
+  Serial.println(send_val);
   delay(280);
 }
