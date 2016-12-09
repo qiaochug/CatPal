@@ -22,8 +22,12 @@ String string_to_use = "";
 
 void setup() {
     BTSerial.begin(9600);
+    Serial.begin(9600);
     servo_x.attach(9);
     servo_y.attach(10);
+    servo_x.write(90);
+    servo_y.write(90);
+    delay(2000);
     servo_feed.attach(11);
     pinMode(laser, OUTPUT);
 }
@@ -46,10 +50,13 @@ void loop() {
           totalString += '\0';
           string_to_use = totalString;
           totalString  = "";
+          BTSerial.flush();//clear bluetooth buffer!
           read_data = true;
+         Serial.println(string_to_use);
           break;
         }
       }
+      
       for(int i = 0; i < string_to_use.length(); i++){
           if(string_to_use.charAt(i) == 'X'){
             inString_x = "";
@@ -57,71 +64,84 @@ void loop() {
             yRead = false;
             feedRead = false;
             modeRead = false;
-          }
-          else if(xRead){
-            inString_x += string_to_use.charAt(i);
-          }
-          else if(string_to_use.charAt(i) == 'Y'){
+          }else if(string_to_use.charAt(i) == 'Y'){
             inString_y = "";
             yRead = true;
             xRead = false;
             feedRead = false;
             modeRead = false;
-          }
-          else if(yRead){
-            inString_y += string_to_use.charAt(i);
-          }
-          else if(string_to_use.charAt(i) == 'F'){
+          }else if(string_to_use.charAt(i) == 'F'){
             inString_feed = "";
             yRead = false;
             xRead = false;
             feedRead = true;
             modeRead = false;
-          }
-          else if(feedRead){
-            inString_feed += string_to_use.charAt(i);
-          }
-          else if(string_to_use.charAt(i) == 'M'){
+          }else if(string_to_use.charAt(i) == 'M'){
             inString_mode = "";
             yRead = false;
             xRead = false;
             feedRead = false;
             modeRead = true;
           }
+          else if(xRead){
+            inString_x += string_to_use.charAt(i);
+          }
+         
+          else if(yRead){
+            inString_y += string_to_use.charAt(i);
+          }
+         
+          else if(feedRead){
+            inString_feed += string_to_use.charAt(i);
+          }
           else if(modeRead){
             inString_mode += string_to_use.charAt(i);
-          }
-         }
+          }}
+          
+          inString_mode_prev = inString_mode;
+          inString_mode = "";
+          inString_feed_prev = inString_feed;
+         
+          inString_feed = "";
+          inString_x_prev = inString_x;
+          inString_x = "";
+          inString_y_prev = inString_y;
+          inString_x = "";
 
        
       
       if(read_data){
-          if(inString_mode.toInt() != 1){
-               x = inString_x.toInt();
-          y = inString_y.toInt();
+          if(inString_mode_prev.toInt() != 1){
+            Serial.println("entered manual mode");
+          x = inString_x_prev.toInt();
+          y = inString_y_prev.toInt();
+          //Serial.print("X");
+          //Serial.println(x);
+          //Serial.print("Y");
+          //Serial.print(y);
           servo_x.write(map(x, 0, 1023, 0, 180));
-          servo_y.write(map(y, 0, 1023, 30, 90));
+          servo_y.write(map(y, 0, 1023, 0, 180));
           digitalWrite(laser, HIGH);
           delay(500);
-          if(inString_feed.toInt() == 1)
+          if(inString_feed_prev.toInt() == 1)
           {
             servo_feed.write(20);
             delay(2000);
           }
          }
          
-          else if(inString_mode.toInt()==1){
+          else if(inString_mode_prev.toInt()==1){
             Random();
           }
       } else if(!read_data){
-         digitalWrite(laser,LOW):
+         digitalWrite(laser,LOW);
       }
-      totalString = "";
-      string_to_use = "";
-      inString_x = "";
-      inString_y = "";
-      inString_feed = "";
-      inString_feed = "";
+      //totalString = "";
+      //string_to_use = "";
+      //inString_x = "";
+      //inString_y = "";
+      //inString_feed = "";
+      //inString_feed = ""; 
       
 }
 
