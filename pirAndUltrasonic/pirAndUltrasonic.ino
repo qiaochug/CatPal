@@ -41,7 +41,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  servo.attach(9);
+  servo.attach(2);
   servo.write(90);
 
   //set up WiFi:
@@ -82,7 +82,7 @@ void loop() {
 //
 //  Serial.println("Distance reading");
 //  Serial.println(distance);
-  if(distance > 21){ //If reading below this threshold, assume intruder detected
+  if(distance > 15){ //If reading below this threshold, assume intruder detected
     lack = true;
   }else{
     lack = false;
